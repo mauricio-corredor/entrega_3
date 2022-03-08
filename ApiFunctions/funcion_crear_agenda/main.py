@@ -18,7 +18,7 @@ def funcion_crear_agenda(datos):
     try:
         url = f"{url_api_crear_agenda}/{data['sellerId']}"
         orderId = data['orderId']
-        crear_agenda = requests.post(url, json = {"order_uuid": orderId })  
+        crear_agenda = requests.post(url, json = {"uuid": orderId })  
         if crear_agenda.status_code != 201:     
             return "No se creó la agenda", crear_agenda.status_code
 

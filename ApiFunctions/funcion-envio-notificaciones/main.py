@@ -7,12 +7,9 @@ url_api_envio_notificaciones = os.environ.get('URL_API_ENVIO_NOTIFICACIONES', ''
 
 def funcion_envio_notificaciones(datos):    
     print("Consumidor de Dispositivos para enviar notificaciones")
-    #url_api_envio_notificaciones="https://gwintegraciones-baqkkpep.uc.gateway.dev/v1/notificar/device"
     print(url_api_envio_notificaciones)
     data = datos.get_json(force=True)
     print(data)
-    #print(type(data))
-    #return "OK"
     if data == None:
         return "No se recibe información", 400
     try:

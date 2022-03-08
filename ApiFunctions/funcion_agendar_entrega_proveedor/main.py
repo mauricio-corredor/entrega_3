@@ -14,7 +14,7 @@ datastore_client = datastore.Client()
 kind = "Agenda"
 
 
-def funcion_agendar_entrega_proveedor(event):
+def funcion_agendar_entrega_proveedor(event, context):
     data = event['data']
     print(data)
     if data == None:

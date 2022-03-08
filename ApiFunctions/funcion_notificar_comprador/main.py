@@ -1,5 +1,4 @@
 from google.cloud import tasks_v2
-import requests
 import os
 import json
 
@@ -11,7 +10,7 @@ url_function_consumidor = os.environ.get('URL_FUNCTION_CONSUMIDOR', '')
 client = tasks_v2.CloudTasksClient()
 
 
-def funcion_notificador_comprador(event):
+def funcion_notificador_comprador(event, context):
     data = event['data']
     print(data)
     if data == None:
@@ -26,7 +25,7 @@ def funcion_notificador_comprador(event):
                 "headers": {
                     "Content-type": "application/json"
                 },
-                'body':({'userId': data['userId']}).encode()
+                'body':json.dumps({'userId': data['userId']}).encode()
             }
         }
         response = client.create_task(parent= parent, task= task)
@@ -43,4 +42,4 @@ def funcion_notificador_comprador(event):
     except:
         return "Pedido No actualizado", 404
 
-#gcloud functions deploy funcion-entrega3-notificar-comprador --entry-point funcion_notificar_comprador --runtime python39 --trigger-topic agenda --allow-unauthenticated --memory 128MB --region us-central1 --timeout 60 --min-instances 0 --max-instances 1 --service-account "misw-entrega3-atormentados@entrega3-343303.iam.gserviceaccount.com" --set-env-vars QUEUE_ID=cola-obtener-dispositivos,LOCATION_ID=us-central1,PROJECT_ID=entrega3-343303,URL_FUNCTION_CONSUMIDOR=https://us-central1-entrega3-343303.cloudfunctions.net/funcion-entrega3-obtener-dispositivos
+#gcloud functions deploy funcion-entrega3-notificar-comprador --entry-point funcion_notificador_comprador --runtime python39 --trigger-topic agenda --allow-unauthenticated --memory 128MB --region us-central1 --timeout 60 --min-instances 0 --max-instances 1 --service-account "misw-entrega3-atormentados@entrega3-343303.iam.gserviceaccount.com" --set-env-vars QUEUE_ID=cola-obtener-dispositivos,LOCATION_ID=us-central1,PROJECT_ID=entrega3-343303,URL_FUNCTION_CONSUMIDOR=https://us-central1-entrega3-343303.cloudfunctions.net/funcion-entrega3-obtener-dispositivos
